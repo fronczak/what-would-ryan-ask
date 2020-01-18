@@ -16,7 +16,7 @@
 
 
     // Helpers
-    shuffle = function (o) {
+    shuffleColors = function (o) {
         for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) ;
         return o;
     };
@@ -49,7 +49,7 @@
 
     $(function () {
 
-        var questionContainer = $('#questions ul');
+        let questionContainer = $('#questions ul');
         $.each(questions, function (key, item) {
             questionContainer.append(
                 $(document.createElement("li")).append(
@@ -79,14 +79,10 @@
                         'for': key
                     }).text(item)))
         });
-
-        // $('#questions ul>li').tsort("input", {
-        //     attr: "value"
-        // });
     });
 
 
-    var wheel = {
+    let wheel = {
 
         timerHandle: 0,
         timerDelay: 33,
@@ -120,7 +116,7 @@
 
         spin: function () {
             // Start the wheel only if it's not already spinning
-            if (wheel.timerHandle == 0) {
+            if (wheel.timerHandle === 0) {
                 wheel.spinStart = new Date().getTime();
                 wheel.maxSpeed = Math.PI / (16 + Math.random()); // Randomly vary how hard the spin is
                 wheel.frames = 0;
@@ -185,24 +181,24 @@
         },
 
         initWheel: function () {
-            shuffle(wheel.colors);
+            shuffleColors(wheel.colors);
         },
 
         // Called when segments have changed
         update: function () {
             // Ensure we start mid way on a item
             //var r = Math.floor(Math.random() * wheel.segments.length);
-            var r = 0;
+            let r = 0;
             wheel.angleCurrent = ((r + 0.5) / wheel.segments.length) * Math.PI * 2;
 
-            var segments = wheel.segments;
-            var len = segments.length;
-            var colors = wheel.colors;
-            var colorLen = colors.length;
+            let segments = wheel.segments;
+            let len = segments.length;
+            let colors = wheel.colors;
+            let colorLen = colors.length;
 
-            // Generate a color cache (so we have consistant coloring)
-            var seg_color = new Array();
-            for (var i = 0; i < len; i++)
+            // Generate a color cache (so we have consistent coloring)
+            let seg_color = [];
+            for (let i = 0; i < len; i++)
                 seg_color.push(colors[segments[i].hashCode().mod(colorLen)]);
 
             wheel.seg_color = seg_color;
@@ -217,15 +213,15 @@
         },
 
         clear: function () {
-            var ctx = wheel.canvasContext;
+            let ctx = wheel.canvasContext;
             ctx.clearRect(0, 0, 1500, 800);
         },
 
         drawNeedle: function () {
-            var ctx = wheel.canvasContext;
-            var centerX = wheel.centerX;
-            var centerY = wheel.centerY;
-            var size = wheel.size;
+            let ctx = wheel.canvasContext;
+            let centerX = wheel.centerX;
+            let centerY = wheel.centerY;
+            let size = wheel.size;
 
             ctx.lineWidth = 1;
             ctx.strokeStyle = '#000000';
@@ -242,7 +238,8 @@
             ctx.fill();
 
             // Which segment is being pointed to?
-            var i = wheel.segments.length - Math.floor((wheel.angleCurrent / (Math.PI * 2)) * wheel.segments.length) - 1;
+            let i = wheel.segments.length - Math.floor((wheel.angleCurrent / (Math.PI * 2)) * wheel.segments.length)
+                - 1;
 
             // Now draw the winning name
             ctx.textAlign = "left";
@@ -253,16 +250,16 @@
         },
 
         drawSegment: function (key, lastAngle, angle) {
-            var ctx = wheel.canvasContext;
-            var centerX = wheel.centerX;
-            var centerY = wheel.centerY;
-            var size = wheel.size;
+            let ctx = wheel.canvasContext;
+            let centerX = wheel.centerX;
+            let centerY = wheel.centerY;
+            let size = wheel.size;
 
-            var segments = wheel.segments;
-            var len = wheel.segments.length;
-            var colors = wheel.seg_color;
+            let segments = wheel.segments;
+            let len = wheel.segments.length;
+            let colors = wheel.seg_color;
 
-            var value = segments[key];
+            let value = segments[key];
 
             ctx.save();
             ctx.beginPath();
@@ -291,21 +288,21 @@
         },
 
         drawWheel: function () {
-            var ctx = wheel.canvasContext;
+            let ctx = wheel.canvasContext;
 
-            var angleCurrent = wheel.angleCurrent;
-            var lastAngle = angleCurrent;
+            let angleCurrent = wheel.angleCurrent;
+            let lastAngle = angleCurrent;
 
-            var segments = wheel.segments;
-            var len = wheel.segments.length;
-            var colors = wheel.colors;
-            var colorsLen = wheel.colors.length;
+            let segments = wheel.segments;
+            let len = wheel.segments.length;
+            let colors = wheel.colors;
+            let colorsLen = wheel.colors.length;
 
-            var centerX = wheel.centerX;
-            var centerY = wheel.centerY;
-            var size = wheel.size;
+            let centerX = wheel.centerX;
+            let centerY = wheel.centerY;
+            let size = wheel.size;
 
-            var PI2 = Math.PI * 2;
+            let PI2 = Math.PI * 2;
 
             ctx.lineWidth = 1;
             ctx.strokeStyle = '#000000';
@@ -342,7 +339,7 @@
     window.onload = function () {
         wheel.init();
 
-        var segments = new Array();
+        var segments = [];
         $.each($('#questions input:checked'), function (key, cbox) {
             segments.push(cbox.value);
         });
